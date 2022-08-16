@@ -2,17 +2,32 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Button from './src/components/Button';
-import TextInput from './src/components/TextInput';
+import Header from './src/components/Headers';
+import Logo from './src/components/Logo';
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 import { theme } from './src/core/theme';
+import StartScreen from './src/screens/StartScreen';
+import LoginScreen from './src/screens/LoginScrren';
+import RegisterScreen from './src/screens/RegisterScreen';
+
+const Stack = createStackNavigator()
 export default function App() {
   return (
     <Provider theme={theme}>
-      <View style={styles.container}>
-        <Text>Open up App.tsx to start working on your app!</Text>
-        <Button mode="contained" >Click Me</Button>
-        <TextInput label="Email" /> 
-        <StatusBar style="auto" />
-      </View>
+      <NavigationContainer>
+      <Stack.Navigator 
+      initialRouteName='StartScreen'
+      screenOptions={{
+        headerShown:false
+      }}
+      >
+      
+      <Stack.Screen name="StartScreen" component={StartScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+      </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }
