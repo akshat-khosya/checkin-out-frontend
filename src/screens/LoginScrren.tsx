@@ -10,12 +10,12 @@ import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
-
+import axios from "axios";
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
-  const onLoginPressed = () => {
+  const onLoginPressed = async () => {
     const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
     if (emailError || passwordError) {
@@ -23,10 +23,29 @@ export default function LoginScreen({ navigation }) {
       setPassword({ ...password, error: passwordError })
       return
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
-    })
+    const data={
+      email:email.value,
+      password:password.value
+    }
+    
+    let config = {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+    try {
+      const res= await axios.post('http://localhost:4000/api/session/',data,config);
+      alert(res.data.refreshToken);
+      console.log(res.data);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+   
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'Dashboard' }],
+    // })
   }
 
   return (
